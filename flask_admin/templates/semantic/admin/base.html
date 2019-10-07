@@ -1,0 +1,155 @@
+{% import 'admin/layout.html' as layout with context -%}
+{% import 'admin/static.html' as admin_static with context %}
+
+{% block dtd %}<!DOCTYPE html>{% endblock dtd %}
+{% block html %}
+{% block html_open %}<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ LANGUAGE_CODE or 'en' }}" lang="{{ LANGUAGE_CODE or 'en' }}">{% endblock html_open %}
+ {% block head %}
+ <head>
+  {% block head_prefix %}
+  {% endblock %}
+  {% block browser %}{% endblock browser %}
+  {% block site %}
+   {% block site_prefix %}{% endblock site_prefix %}
+   {% block site_title %}<title>{% block title %}{% if admin_view.category %}{{ admin_view.category }} - {% endif %}{{ admin_view.name }} - {{ admin_view.admin.name }}{% endblock %}</title>{% endblock site_title%}
+   {% block site_suffix %}{% endblock site_suffix %}
+  {% endblock site %}
+  {% block page %}{% endblock page %}
+  {% block view %}{% endblock view %}
+  {% block meta %}
+   {% block meta_prefix %}{% endblock meta_prefix %}
+   {% block meta_author%}<meta name="author" content="">{% endblock meta_author %}
+   {% block meta_charset %}<meta charset="UTF-8">{% endblock meta_charset %}
+   {% block meta_language %}{% endblock meta_language %}
+   {% block meta_description %}<meta name="description" content="">{% endblock meta_description %}
+   {% block meta_keywords %}{% endblock meta_keywords %}
+   {% block meta_othertags %}{% endblock meta_othertags %}
+   {% block meta_refresh %}{% endblock meta_refresh %}
+   {% block meta_compatibility %}<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">{% endblock meta_compatibility %}
+   {% block meta_viewport %}<meta name="viewport" content="width=device-width, initial-scale=1.0">{% endblock meta_viewport %}
+   {% block meta_robots %}{% endblock meta_robots %}
+   {% block meta_suffix %}{% endblock meta_suffix %}
+  {% endblock meta %}
+  {% block rss %}
+  {% endblock rss %}
+  {% block css %}
+   {% block css_prefix %}{% endblock css_prefix %}
+   {% block css_libs %}
+   <link href="{{ admin_static.url(filename='bootstrap/bootstrap3/swatch/{swatch}/bootstrap.min.css'.format(swatch=config.get('FLASK_ADMIN_SWATCH', 'default')), v='3.3.5') }}" rel="stylesheet">
+   {%if config.get('FLASK_ADMIN_SWATCH', 'default') == 'default' %}
+   <link href="{{ admin_static.url(filename='bootstrap/bootstrap3/css/bootstrap-theme.min.css', v='3.3.5') }}" rel="stylesheet">
+   {%endif%}
+   <link href="{{ admin_static.url(filename='admin/css/bootstrap3/admin.css', v='1.1.1') }}" rel="stylesheet">
+   <link href="{{ admin_static.url(filename='admin/css/bootstrap3/submenu.css') }}" rel="stylesheet">
+   {% if admin_view.extra_css %}{% for css_url in admin_view.extra_css %}
+   <link href="{{ css_url }}" rel="stylesheet">
+   {% endfor %}{% endif %}
+   <style>
+   body { padding-top: 4px; }
+   </style>
+   {% endblock css_libs %}
+   {% block css_layout %}{% endblock css_layout%}
+   {% block css_fonts %}{% endblock css_fonts%}
+   {% block css_style %}{% endblock css_style%}
+   {% block css_site %}{% endblock css_site %}
+   {% block css_page %}{% endblock css_page %}
+   {% block css_view %}{% endblock css_view %}
+   {% block css_suffix %}{% endblock css_suffix %}
+  {% endblock css %}
+  {% block head_suffix %}
+  {% endblock %}
+ </head>
+ {% endblock head %}
+ {% block body %}
+ <body class="container{%if config.get('FLASK_ADMIN_FLUID_LAYOUT', False) %}-fluid{% endif %}">
+  {% block body_content %}
+  {% block header %}
+  <header class="row">
+   {% block header_content %}
+   {% block brand %}
+   <a class="navbar-brand" href="{{ admin_view.admin.url }}">{{ admin_view.admin.name }}</a>
+   {% endblock %}
+   {% block header_banner %}{% endblock header_banner %}
+   {% block header_title %}{% endblock header_title %}
+   {% block header_breadcrumb %}{% endblock header_breadcrumb %}
+   {% endblock header_content %}
+  </header>
+  {% endblock header %}
+  {% block nav %}
+  <nav class="navbar navbar-default" role="navigation">
+   {% block nav_content %}
+   <!-- Brand and toggle get grouped for better mobile display -->
+   <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#admin-navbar-collapse">
+     <span class="sr-only">Toggle navigation</span>
+     <span class="icon-bar"></span>
+     <span class="icon-bar"></span>
+     <span class="icon-bar"></span>
+    </button>
+   </div>
+   <!-- navbar content -->
+   <div class="collapse navbar-collapse" id="admin-navbar-collapse">
+    {% block main_menu %}
+    <ul class="nav navbar-nav">
+    {{ layout.menu() }}
+    </ul>
+    {% endblock %}
+
+    {% block menu_links %}
+    <ul class="nav navbar-nav navbar-right">
+    {{ layout.menu_links() }}
+    </ul>
+    {% endblock %}
+    {% block access_control %}
+    {% endblock %}
+   </div>
+   {% endblock nav_content %}
+  </nav>
+  {% endblock nav %}
+
+  {# store the jinja2 context for form_rules rendering logic #}
+  {% set render_ctx = h.resolve_ctx() %}
+
+  {% block main %}
+  <main>
+  {% block messages %}
+  {{ layout.messages() }}
+  {% endblock %}
+  {% block main_content %}
+  {% endblock main_content %}
+  </main>
+  {% endblock main %}
+  {% block aside %}
+  {% endblock aside %}
+  {% block footer %}
+  <footer>
+   {% block footer_content %}
+   {% block footer_breadcrumb %}{% endblock footer_breadcrumb %}
+   {% block footer_legal %}{% endblock footer_legal %}
+   {% endblock footer_content %}
+  </footer>
+  {% endblock footer %}
+  {% endblock body_content %}
+ </body>
+ {% endblock body %}
+ {% block foot %}
+  {% block js %}
+   {% block js_libs %}
+   <script src="{{ admin_static.url(filename='vendor/jquery.min.js', v='3.3.1') }}" type="text/javascript"></script>
+   <script src="{{ admin_static.url(filename='bootstrap/bootstrap3/js/bootstrap.min.js', v='3.3.5') }}" type="text/javascript"></script>
+   <script src="{{ admin_static.url(filename='vendor/moment.min.js', v='2.22.2') }}" type="text/javascript"></script>
+   <script src="{{ admin_static.url(filename='vendor/select2/select2.min.js', v='3.5.2') }}" type="text/javascript"></script>
+   <script src="{{ admin_static.url(filename='admin/js/helpers.js', v='1.0.0') }}" type="text/javascript"></script>
+   {% if admin_view.extra_js %}
+   {% for js_url in admin_view.extra_js %}
+   <script src="{{ js_url }}" type="text/javascript"></script>
+   {% endfor %}
+   {% endif %}
+   {% endblock js_libs %}
+   {% block js_site %}{% endblock js_site %}
+   {% block js_page %}{% endblock js_page %}
+   {% block js_view %}{% endblock js_view %}
+  {% endblock js %}
+ {% endblock foot %}
+</html>
+{% endblock html %}
